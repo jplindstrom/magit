@@ -2423,6 +2423,7 @@ Please see the manual for a complete description of Magit.
   (eq (compare-strings string nil (length prefix) prefix nil nil) t))
 
 (defun magit-revert-buffers (dir &optional ignore-modtime)
+  (setq flymake-start-syntax-check-on-find-file nil)
   (dolist (buffer (buffer-list))
     (when (and buffer
                (buffer-file-name buffer)
@@ -2436,7 +2437,8 @@ Please see the manual for a complete description of Magit.
         (condition-case var
             (revert-buffer t t nil)
           (error (let ((signal-data (cadr var)))
-                   (cond (t (magit-bug-report signal-data))))))))))
+                   (cond (t (magit-bug-report signal-data)))))))))
+  (setq flymake-start-syntax-check-on-find-file t))
 
 (defun magit-update-vc-modeline (dir)
   "Update the modeline for buffers representable by magit."
